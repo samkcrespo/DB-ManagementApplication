@@ -1,20 +1,33 @@
 <template>
-    <div>
-        <b-table striped hover :items="items"></b-table>
-    </div>
+    <table id="tableComponent" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <!-- loop through each value of the fields to get the table header -->
+                <th v-for="field in fields" :key='field' @click="sortTable(field)">
+                    {{field}} <i class="bi bi-sort-alpha-down" aria-label='Sort Icon'></i>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop through the list get the each data -->
+            <tr v-for="item in filteredList" :key='item'>
+                <td v-for="field in fields" :key='field'>{{item[field]}}</td>
+            </tr>
+        </tbody>
+    </table>
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        items: [
-          { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-          { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-          { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-          { age: 38, first_name: 'Jami', last_name: 'Carney' }
-        ]
-      }
+    export default {
+        name: 'TableComponent',
+        props: {
+            //
+            data: {
+                type: Array,
+            },
+            fields: {
+                type: Array,
+            }
+        },
     }
-  }
 </script>

@@ -12,6 +12,7 @@
             <!-- Loop through the list get the each data -->
             <tr v-for="item in filteredList" :key='item'>
                 <td v-for="field in fields" :key='field'>{{item[field]}}</td>
+
             </tr>
         </tbody>
     </table>
@@ -26,6 +27,9 @@
                 type: Array,
             },
             fields: {
+                type: Array,
+            },
+            actions: {
                 type: Array,
             }
         },

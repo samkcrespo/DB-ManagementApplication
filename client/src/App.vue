@@ -6,7 +6,7 @@
             <div class="table-responsive my-5">
 
                 <!-- The table component -->
-                <DataTable :fields='fields' :data="studentData"></DataTable>
+                <DataTable :fields='fields' :data="studentData" :actions="actions"></DataTable>
             </div>
         </div>
 </div>
@@ -28,7 +28,34 @@
             const fields = [
                  'Name', 'Description', 'Release Year', 'Actions'
             ]
-            return { data, fields }
+            const actions = [
+                {
+                  
+                    btn_text: "Copy",
+                    event_name: "on-copy",
+                    class: "btn btn-primary my-custom-class",
+                    event_payload: {
+                        msg: "my custom msg"
+                    },
+                   //{
+                   // btn_text: "Add",
+                   // event_name: "on-add",
+                   // class: "btn btn-primary my-custom-class",
+                   // event_payload: {
+                   //     msg: "my custom msg"
+                   // },
+                   //  {
+                   // btn_text: "Delete",
+                   // event_name: "on-delete",
+                   // class: "btn btn-primary my-custom-class",
+                   // event_payload: {
+                   //     msg: "my custom msg"
+                   // },
+                
+                }
+            ]
+
+            return { data, fields, actions }
         },
     }
 </script>

@@ -1,62 +1,52 @@
 <template>
-  <article>
-    <div class="action-container">
-      <b-button class="add-button" variant="success" @click="addRowHandler"
-        >Add Row</b-button
-      >
-     
-    </div>
-    <b-table class="b-table" :items="tableItems" :fields="fields" fixed>
-      <template v-for="(field, index) in fields" #[`cell(${field.key})`]="data">
-        <b-form-datepicker
-          v-if="field.type === 'date' && tableItems[data.index].isEdit"
-          :key="index"
-          :type="field.type"
-          :value="tableItems[data.index][field.key]"
-          @input="(value) => inputHandler(value, data.index, field)"
-        ></b-form-datepicker>
-        <b-form-select
-          v-else-if="field.type === 'select' && tableItems[data.index].isEdit"
-          :key="index"
-          :value="tableItems[data.index][field.key]"
-          @input="(value) => inputHandler(value, data.index, field)"
-          :options="field.options"
-        ></b-form-select>
-        <b-checkbox
-          v-else-if="field.key === 'selectRow'"
-          :checked="tableItems[data.index].isSelected"
-          :key="index"
-          @change="selectRowHandler(data)"
-        ></b-checkbox>
-        <div :key="index" v-else-if="field.type === 'edit'">
-            <b-button @click="editRowHandler(data, field)" :disabled="disableButton(data)">
-                <span v-if="!tableItems[data.index].isEdit">Edit</span>
-                <span v-else>Done</span>
-            </b-button>
-            <b-button v-if="!tableItems[data.index].isEdit"
-                      class="delete-button"
-                      variant="danger"
-                      @click="removeRowHandler(data.index)">Remove</b-button>
-            <b-button id="copyToClipboard" v-on:click.prevent="copyToClipboard" class="button control is-medium">
-                <span class="icon">
-                    <i class="bi bi-clipboard-check">Copy</i>
-                    </span>
-                </b-button>
+    <article>
+        <div class="action-container">
+            <b-button class="add-button" variant="success" @click="addRowHandler">Add Row</b-button>
+
         </div>
-        <b-form-input
-          v-else-if="field.type && tableItems[data.index].isEdit"
-          :key="index"
-          :type="field.type"
-          :value="tableItems[data.index][field.key]"
-          @blur="(e) => inputHandler(e, data.index, field)"
-          :required="field.required"
-          :pattern="field.pattern"
-          :state="tableItems[data.index].validity[field.key]"
-        ></b-form-input>
-        <span :key="index" v-else>{{ data.value }}</span>
-      </template>
-    </b-table>
-  </article>
+        <b-table class="b-table" :items="tableItems" :fields="fields" fixed>
+            <template v-for="(field, index) in fields" #[`cell(${field.key})`]="data">
+                <b-form-datepicker v-if="field.type === 'date' && tableItems[data.index].isEdit"
+                                   :key="index"
+                                   :type="field.type"
+                                   :value="tableItems[data.index][field.key]"
+                                   @input="(value) => inputHandler(value, data.index, field)"></b-form-datepicker>
+                <b-form-select v-else-if="field.type === 'select' && tableItems[data.index].isEdit"
+                               :key="index"
+                               :value="tableItems[data.index][field.key]"
+                               @input="(value) => inputHandler(value, data.index, field)"
+                               :options="field.options"></b-form-select>
+                <b-checkbox v-else-if="field.key === 'selectRow'"
+                            :checked="tableItems[data.index].isSelected"
+                            :key="index"
+                            @change="selectRowHandler(data)"></b-checkbox>
+                <div :key="index" v-else-if="field.type === 'edit'">
+                    <b-button @click="editRowHandler(data, field)" :disabled="disableButton(data)">
+                        <span v-if="!tableItems[data.index].isEdit">Edit</span>
+                        <span v-else>Done</span>
+                    </b-button>
+                    <b-button v-if="!tableItems[data.index].isEdit"
+                              class="delete-button"
+                              variant="danger"
+                              @click="removeRowHandler(data.index)">Remove</b-button>
+                    <b-button id="copyToClipboard" v-on:click.prevent="copyToClipboard" class="button control is-medium">
+                        <span class="icon">
+                            <i class="bi bi-clipboard-check">Copy</i>
+                        </span>
+                    </b-button>
+                </div>
+                <b-form-input v-else-if="field.type && tableItems[data.index].isEdit"
+                              :key="index"
+                              :type="field.type"
+                              :value="tableItems[data.index][field.key]"
+                              @blur="(e) => inputHandler(e, data.index, field)"
+                              :required="field.required"
+                              :pattern="field.pattern"
+                              :state="tableItems[data.index].validity[field.key]"></b-form-input>
+                <span :key="index" v-else>{{ data.value }}</span>
+            </template>
+        </b-table>
+    </article>
 </template>
 
 <script>
@@ -147,13 +137,15 @@ export default {
 </script>
 
 <style>
-.action-container {
-  margin-bottom: 10px;
-}
-.action-container button {
-  margin-right: 5px;
-}
-.delete-button {
-  margin-left: 5px;
-}
+    .action-container {
+        margin-bottom: 10px;
+    }
+
+        .action-container button {
+            margin-right: 5px;
+        }
+
+    .delete-button {
+        margin-left: 5px;
+    }
 </style>

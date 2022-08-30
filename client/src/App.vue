@@ -1,61 +1,61 @@
 <template>
-    <div id="app">
-        <!--<h1>Hello from App.vue</h1>-->
-        <div class="container text-center  mt-5 mb-5">
-            <h1 class="mt-5 fw-bolder text-success "> Motion Picture Database </h1>
-            <div class="table-responsive my-5">
-
-                <!-- The table component -->
-                <DataTable :fields='fields' :data="studentData" :actions="actions"></DataTable>
-            </div>
-        </div>
-</div>
+  <div id="app">
+      <h1>Motion Pictures Database</h1>
+    <EditableTable
+      v-model="motionPictures"
+      :fields="fields"
+      @submit="handleUpdateMotionPicture($event)"
+      @remove="handleRemoveMotionPicture($event)"
+    ></EditableTable>
+  </div>
 </template>
 
 <script>
-    // Importing the table component
-    import DataTable from './components/DataTable.vue'
-    export default {
-        name: 'App',
-        components: {
-            DataTable
-        },
-        setup() {
-            //An array of values for the data
-            const data = [
-                
-            ]
-            const fields = [
-                 'Name', 'Description', 'Release Year', 'Actions'
-            ]
-            const actions = [
-                {
-                  
-                    btn_text: "Copy",
-                    event_name: "on-copy",
-                    class: "btn btn-primary my-custom-class",
-                    event_payload: {
-                        msg: "my custom msg"
-                    },
-                   //{
-                   // btn_text: "Add",
-                   // event_name: "on-add",
-                   // class: "btn btn-primary my-custom-class",
-                   // event_payload: {
-                   //     msg: "my custom msg"
-                   // },
-                   //  {
-                   // btn_text: "Delete",
-                   // event_name: "on-delete",
-                   // class: "btn btn-primary my-custom-class",
-                   // event_payload: {
-                   //     msg: "my custom msg"
-                   // },
-                
-                }
-            ]
+import EditableTable from "./components/EditableTable.vue";
+    import { addMotionPicture, deleteMotionPicture, getMotionPictures, updateMotionPicture } from "./services/motionpicture";
 
-            return { data, fields, actions }
+export default {
+  name: "App",
+  components: {
+    EditableTable,
+  },
+  data() {
+    return {
+        fields: [
+            { key: "name", label: "Name", type: "text", required: true },
+            { key: "description", label: "Description", type: "description", required: true },
+            { key: "releaseYear", label: "Release Year", type: "text" },
+            { key: "edit", label: "", type: "edit" },
+        ],
+        motionPictures: [],
+    };
+  },
+        async mounted() {
+            this.motionPictures = await getMotionPictures();
         },
-    }
+        methods: {
+            async handleUpdateMotionPicture(motionpicture) {
+                if (motionpicture.id) {
+                    await updateMotionPicture(motionpicture);
+                } else {
+                    await addMotionPicture(motionpicture);
+                }
+            },
+            async handleRemoveMotionPicture(motionpicture) {
+                if (motionpicture.length > 0) {
+                    await motionpicture.map(async (item) => {
+                        await deleteMotionPicture(item.id);
+                    })
+                } else {
+                    await deleteMotionPicture(motionpicture.id);
+                }
+            }
+        },
+};
 </script>
+
+<style>
+#app {
+  margin: 20px;
+}
+</style>

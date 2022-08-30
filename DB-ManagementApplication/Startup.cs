@@ -7,6 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DB_ManagementApplication
 {
@@ -18,17 +21,21 @@ namespace DB_ManagementApplication
         }
 
         public IConfiguration Configuration { get; }
+        private readonly string _policyName = "CorsPolicy";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors();
+           
             services.AddControllers();
+
+        
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DBManagementApplication", Version = "v1" });
             });
-           
+
 
 
         }
@@ -40,27 +47,22 @@ namespace DB_ManagementApplication
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ASPNETCoreVueChecklist v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DBManagementApplication v1"));
             }
 
             app.UseHttpsRedirection();
-
-            app.UseCors(builder =>
-            {
-                builder
-                    .WithOrigins("http://localhost:8080")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            });
-
             app.UseRouting();
+            app.UseCors(options => options.WithOrigins("http://localhost:8080", "http://localhody:8082").AllowAnyMethod());
 
+            app.UseMvc();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+           
         }
     }
 }
+

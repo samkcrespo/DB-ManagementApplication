@@ -6,7 +6,6 @@
       :fields="fields"
       @submit="handleUpdateMotionPicture($event)"
       @remove="handleRemoveMotionPicture($event)"
-                   @add="handleAddMotionPicture($event)"
     ></EditableTable>
   </div>
 </template>
@@ -24,11 +23,12 @@ export default {
     return {
         fields: [
             { key: "name", label: "Name", type: "text", required: true },
-            { key: "description", label: "Description", type: "description", required: true },
-            { key: "releaseYear", label: "Release Year", type: "text" },
+            { key: "description", label: "Description", type: "description"},
+            { key: "releaseYear", label: "Release Year", type: "text", required: true },
             { key: "edit", label: "", type: "edit" },
         ],
         motionPictures: [],
+        isEdit: null
     };
   },
         async mounted() {
@@ -42,10 +42,6 @@ export default {
                     await addMotionPicture(motionpicture);
                 }
             },
-            //async handleAddMotionPicture(motionpicture) {
-            //        await addMotionPicture(motionpicture);
-            //    }
-            //},
             async handleRemoveMotionPicture(motionpicture) {
                 if (motionpicture.length > 0) {
                     await motionpicture.map(async (item) => {

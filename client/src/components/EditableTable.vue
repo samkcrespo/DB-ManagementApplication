@@ -1,22 +1,10 @@
 <template>
   <article>
-    <b-modal
-      id="modal-1"
-      title="Confirm"
-      v-model="openDialog"
-      ok-title="Add"
-      @ok="addRowHandler"
-    >
-
-      <p class="my-4">Are you sure you want to add the selected rows?</p>
-    </b-modal>
     <div class="action-container">
-      <b-button class="add-button" variant="success" @click="openDialog = true"
+      <b-button class="add-button" variant="success" @click="addRowHandler"
         >Add Row</b-button
       >
-      <!--<b-button variant="danger" @click="openDialog = true"
-        >Remove Rows</b-button
-      >-->
+     
     </div>
     <b-table class="b-table" :items="tableItems" :fields="fields" fixed>
       <template v-for="(field, index) in fields" #[`cell(${field.key})`]="data">
@@ -41,17 +29,19 @@
           @change="selectRowHandler(data)"
         ></b-checkbox>
         <div :key="index" v-else-if="field.type === 'edit'">
-          <b-button @click="editRowHandler(data, field)" :disabled="disableButton(data)">
-            <span v-if="!tableItems[data.index].isEdit">Edit</span>
-            <span v-else>Done</span>
-          </b-button>
-          <b-button
-            v-if="!tableItems[data.index].isEdit"
-            class="delete-button"
-            variant="danger"
-            @click="removeRowHandler(data.index)"
-            >Remove</b-button
-          >
+            <b-button @click="editRowHandler(data, field)" :disabled="disableButton(data)">
+                <span v-if="!tableItems[data.index].isEdit">Edit</span>
+                <span v-else>Done</span>
+            </b-button>
+            <b-button v-if="!tableItems[data.index].isEdit"
+                      class="delete-button"
+                      variant="danger"
+                      @click="removeRowHandler(data.index)">Remove</b-button>
+            <b-button id="copyToClipboard" v-on:click.prevent="copyToClipboard" class="button control is-medium">
+                <span class="icon">
+                    <i class="bi bi-clipboard-check">Copy</i>
+                    </span>
+                </b-button>
         </div>
         <b-form-input
           v-else-if="field.type && tableItems[data.index].isEdit"
@@ -80,7 +70,7 @@ export default {
   data() {
     return {
       tableItems: this.mapItems(this.value),
-      openDialog: false,
+        openDialog: false,
     };
   },
   watch: {
@@ -88,7 +78,12 @@ export default {
       this.tableItems = this.mapItems(newVal);
     },
   },
-  methods: {
+        methods: {
+      copyToClipboard() {
+          this.$refs.generator.focus();
+          document.execCommand('copy');
+          this.$buefy.toast.open('Copied!');
+      },
     editRowHandler(data) {
       if (this.tableItems[data.index].isEdit) {
         this.$emit("submit", this.tableItems[data.index]);

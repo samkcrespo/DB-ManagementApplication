@@ -4,19 +4,20 @@
       id="modal-1"
       title="Confirm"
       v-model="openDialog"
-      ok-title="Remove"
-      @ok="removeRowsHandler"
+      ok-title="Add"
+      @ok="addRowHandler"
     >
-      <p class="my-4">Are you sure you want to remove the selected rows?</p>
+
+      <p class="my-4">Are you sure you want to add the selected rows?</p>
     </b-modal>
-    <!--<div class="action-container">
-      <b-button class="add-button" variant="success" @click="addRowHandler"
+    <div class="action-container">
+      <b-button class="add-button" variant="success" @click="openDialog = true"
         >Add Row</b-button
       >
-      <b-button variant="danger" @click="openDialog = true"
+      <!--<b-button variant="danger" @click="openDialog = true"
         >Remove Rows</b-button
-      >
-    </div>-->
+      >-->
+    </div>
     <b-table class="b-table" :items="tableItems" :fields="fields" fixed>
       <template v-for="(field, index) in fields" #[`cell(${field.key})`]="data">
         <b-form-datepicker
@@ -33,12 +34,12 @@
           @input="(value) => inputHandler(value, data.index, field)"
           :options="field.options"
         ></b-form-select>
-        <!--<b-checkbox
+        <b-checkbox
           v-else-if="field.key === 'selectRow'"
           :checked="tableItems[data.index].isSelected"
           :key="index"
           @change="selectRowHandler(data)"
-        ></b-checkbox>-->
+        ></b-checkbox>
         <div :key="index" v-else-if="field.type === 'edit'">
           <b-button @click="editRowHandler(data, field)" :disabled="disableButton(data)">
             <span v-if="!tableItems[data.index].isEdit">Edit</span>

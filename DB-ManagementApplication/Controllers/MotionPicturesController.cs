@@ -5,14 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-using Microsoft.AspNetCore.Cors;
+
 
 namespace DB_ManagementApplication.Controllers
 {
 
     [ApiController]
     [Route("[controller]")]
-    //[EnableCors(origins: "http://localhost:8080", headers: "*", methods: "*")]
+   
     public class MotionPicturesController : ControllerBase
     {
         private readonly DataContext _context;
@@ -23,7 +23,9 @@ namespace DB_ManagementApplication.Controllers
         }
 
         [HttpPost]
-        //[EnableCors]
+     
+
+
         public async Task<int> Create(MotionPicture item)
         {
             _context.MotionPictures.Add(item);
@@ -33,7 +35,9 @@ namespace DB_ManagementApplication.Controllers
         }
 
         [HttpGet]
-        //[EnableCors]
+    
+
+
         public async Task<IEnumerable<MotionPicture>> Get()
         {
             var items = await _context.MotionPictures.ToListAsync();
@@ -42,7 +46,9 @@ namespace DB_ManagementApplication.Controllers
         }
 
         [HttpGet("{id}")]
-        //[EnableCors]
+     
+
+
         public async Task<MotionPicture> Get(int id)
         {
             var item = await _context.MotionPictures.FirstOrDefaultAsync(item => item.Id == id);
@@ -51,18 +57,23 @@ namespace DB_ManagementApplication.Controllers
         }
 
         [HttpPut("{id}")]
-        //[EnableCors]
+ 
+
+
         public async Task<bool> Update(int id, MotionPicture item)
         {
             var existingItem = await _context.MotionPictures.FirstOrDefaultAsync(i => i.Id == id);
             existingItem.Name = item.Name;
+            existingItem.Description = item.Description;
+            existingItem.ReleaseYear = item.ReleaseYear;
             var result = await _context.SaveChangesAsync();
 
             return result > 0;
         }
 
         [HttpDelete("{id}")]
-        //[EnableCors]
+     
+
         public async Task<bool> Delete(int id)
         {
             var item = await _context.MotionPictures.FirstOrDefaultAsync(item => item.Id == id);

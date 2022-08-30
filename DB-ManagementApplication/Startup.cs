@@ -21,16 +21,17 @@ namespace DB_ManagementApplication
         }
 
         public IConfiguration Configuration { get; }
-        private readonly string _policyName = "CorsPolicy";
+     
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-           
-            services.AddControllers();
 
-        
+            services.AddControllers();
+         
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DBManagementApplication", Version = "v1" });
@@ -51,10 +52,9 @@ namespace DB_ManagementApplication
             }
 
             app.UseHttpsRedirection();
+            
+            app.UseCors(options => options.WithOrigins("http://localhost:8080", "http://localhody:8081", "http://localhody:8082").AllowAnyMethod());
             app.UseRouting();
-            app.UseCors(options => options.WithOrigins("http://localhost:8080", "http://localhody:8082").AllowAnyMethod());
-
-            app.UseMvc();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

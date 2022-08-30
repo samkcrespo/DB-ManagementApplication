@@ -6,6 +6,7 @@
       :fields="fields"
       @submit="handleUpdateMotionPicture($event)"
       @remove="handleRemoveMotionPicture($event)"
+                   @add="handleAddMotionPicture($event)"
     ></EditableTable>
   </div>
 </template>
@@ -41,6 +42,10 @@ export default {
                     await addMotionPicture(motionpicture);
                 }
             },
+            //async handleAddMotionPicture(motionpicture) {
+            //        await addMotionPicture(motionpicture);
+            //    }
+            //},
             async handleRemoveMotionPicture(motionpicture) {
                 if (motionpicture.length > 0) {
                     await motionpicture.map(async (item) => {
@@ -50,7 +55,7 @@ export default {
                     await deleteMotionPicture(motionpicture.id);
                 }
             }
-        },
+        }
 };
 </script>
 
